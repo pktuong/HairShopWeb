@@ -8,20 +8,20 @@ group: authentication
 <div class="flex flex-col items-center justify-center px-6 pt-8 mx-auto md:h-screen pt:mt-0 dark:bg-gray-900">
     <a href="/" class="flex items-center justify-center mb-8 text-2xl font-semibold lg:mb-10 dark:text-white">
         <img src="/images/logo.svg" class="mr-4 h-11" alt="FlowBite Logo">
-        <span>Flowbite</span>  
+        <span>Trang quản trị viên</span>  
     </a>
     <!-- Card -->
     <div class="w-full max-w-xl p-6 space-y-8 sm:p-8 bg-white rounded-lg shadow dark:bg-gray-800">
         <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
-            Sign in to platform 
+            Đăng nhập 
         </h2>
-        <form class="mt-8 space-y-6" action="/authentication/sign-in" method="post">
+        <form class="mt-8 space-y-6" id="loginForm" method="post">
             <div>
-                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
+                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
                 <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="name@company.com" required>
             </div>
             <div>
-                <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your password</label>
+                <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mật khẩu</label>
                 <input type="password" name="mat_khau" id="mat_khau" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
             </div>
             <div class="flex items-start">
@@ -40,3 +40,43 @@ group: authentication
         </form>
     </div>
 </div>
+<script>
+    document.getElementById('loginForm').addEventListener('submit', async function (event) {
+      event.preventDefault(); // Ngăn form submit theo cách mặc định
+  
+      const email = document.getElementById('email').value;
+      const mat_khau = document.getElementById('mat_khau').value;
+  
+      try {
+        const response = await fetch('/api/authentication/sign-in', { // Thay URL này bằng endpoint API của bạn
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, mat_khau }), // Gửi dữ liệu
+        });
+  
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.message || 'Đăng nhập thất bại!');
+        }
+  
+        const data = await response.json();
+        // Xử lý thành công, ví dụ hiển thị thông báo
+        
+        console.log('Token:', data.token); // Lưu token nếu cần
+  
+        // Lưu token vào LocalStorage hoặc Cookie
+        localStorage.setItem('authToken', data.token);
+  
+        // Chuyển hướng sang trang quản lý
+        window.location.href = '/';
+      } catch (error) {
+        // Hiển thị lỗi lên giao diện
+        const errorMessage = document.getElementById('error-message');
+        errorMessage.innerText = error.message;
+        errorMessage.classList.remove('hidden');
+      }
+    });
+  </script>
+
