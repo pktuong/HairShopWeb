@@ -21,7 +21,7 @@ group: crud
                                     d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
                                 </path>
                             </svg>
-                            Home
+                            Trang chủ
                         </a>
                     </li>
                     <li>
@@ -33,7 +33,8 @@ group: crud
                                     clip-rule="evenodd"></path>
                             </svg>
                             <a href="#"
-                                class="ml-1 text-gray-700 hover:text-primary-600 md:ml-2 dark:text-gray-300 dark:hover:text-white">Users</a>
+                                class="ml-1 text-gray-700 hover:text-primary-600 md:ml-2 dark:text-gray-300 dark:hover:text-white">Dịch
+                                vụ</a>
                         </div>
                     </li>
                     <li>
@@ -49,7 +50,7 @@ group: crud
                     </li>
                 </ol>
             </nav>
-            <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">Danh sách nhân viên</h1>
+            <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">Danh sách dịch vụ</h1>
         </div>
         <div class="sm:flex">
             <div class="items-center hidden mb-3 sm:flex sm:divide-x sm:divide-gray-100 sm:mb-0 dark:divide-gray-700">
@@ -116,7 +117,7 @@ group: crud
                             d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
                             clip-rule="evenodd"></path>
                     </svg>
-                    Thêm nhân viên
+                    Thêm dịch vụ mới
                 </button>
             </div>
         </div>
@@ -138,15 +139,15 @@ group: crud
                             </th>
                             <th scope="col"
                                 class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                                Họ tên
+                                Tên dịch vụ
                             </th>
                             <th scope="col"
                                 class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                                Số điện thoại
+                                Mô tả
                             </th>
                             <th scope="col"
                                 class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                                Giới tính
+                                Giá tiền
                             </th>
                             <th scope="col"
                                 class=" p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
@@ -154,7 +155,7 @@ group: crud
                             </th>
                             <th scope="col"
                                 class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                                Trạng thái
+                                Thao tác
                             </th>
                             <th scope="col"
                                 class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
@@ -164,8 +165,8 @@ group: crud
                     </thead>
                     <tbody id="employeeList"
                         class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-                        <% for (let i=0; i < users.length; i++) { %>
-                            <% const user=users[i]; %>
+                        <% for (let i=0; i < services.length; i++) { %>
+                            <% const service=services[i]; %>
 
                                 <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
                                     <td class="w-4 p-4">
@@ -176,42 +177,31 @@ group: crud
                                         </div>
                                     </td>
                                     <td class="flex items-center p-4 mr-12 space-x-6 whitespace-nowrap">
-                                        <img class="w-10 h-10 rounded-full" src="<%= user.anh_dai_dien %>"
-                                            alt="<%= user.ho_ten %> avatar">
+                                        <img class="w-10 h-10 rounded-full" src="<%= service.hinh_anh %>" s
+                                            alt="<%= service.ten_dich_vu %> avatar">
                                         <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
                                             <div class="text-base font-semibold text-gray-900 dark:text-white">
-                                                <%= user.ho_ten %>
+                                                <%= service.ten_dich_vu %>
                                             </div>
                                             <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
-                                                <%= user.email %>
+                                                <%= service.thoi_luong %> phút
                                             </div>
                                         </div>
                                     </td>
                                     <td
                                         class="max-w-sm p-4 overflow-hidden text-base font-normal text-gray-500 truncate xl:max-w-xs dark:text-gray-400">
-                                        <%= user.so_dien_thoai %>
+                                        <%= service.mo_ta %>
                                     </td>
                                     <td
                                         class="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        <%= user.gioi_tinh %>
+                                        <%= service.gia_tien %>
                                     </td>
                                     <td
                                         class="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    </td>
-                                    <td
-                                        class="p-4 text-base font-normal text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="flex items-center">
-                                            <% if (user.trang_thai_tai_khoan==='Hoạt động' ) { %>
-                                                <div class="h-2.5 w-2.5 rounded-full bg-green-400 mr-2"></div>
-                                                <% } else { %>
-                                                    <div class="h-2.5 w-2.5 rounded-full bg-red-500 mr-2"></div>
-                                                    <% } %>
-                                        </div>
                                     </td>
                                     <td class="p-4 space-x-2 whitespace-nowrap">
                                         <button type="button" data-modal-toggle="edit-user-modal"
                                             data-modal-target="edit-user-modal"
-                                            onclick="populateEditForm(<%= JSON.stringify(user) %>)"
                                             class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                                             <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -224,9 +214,8 @@ group: crud
                                             </svg>
                                             Sửa
                                         </button>
-                                        <button data-id="<%= user.id %>" type="button"
-                                            onclick="setStaffIdDelete('<%= user.id %>')"
-                                            data-modal-toggle="delete-user-modal" data-modal-target="delete-user-modal"
+                                        <button type="button" data-modal-toggle="delete-user-modal"
+                                            data-modal-target="delete-user-modal" onclick="setIdServiceDel('<%= service.id %>')"
                                             class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900">
                                             <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -301,7 +290,7 @@ group: crud
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-800">
             <!-- Modal header -->
             <div class="flex items-start justify-between p-5 border-b rounded-t dark:border-gray-700">
-                <h3 class="text-xl font-semibold dark:text-white">Thêm tài khoản nhân viên</h3>
+                <h3 class="text-xl font-semibold dark:text-white">Thêm dịch vụ mới</h3>
                 <button type="button"
                     class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-700 dark:hover:text-white"
                     data-modal-toggle="add-user-modal">
@@ -314,42 +303,71 @@ group: crud
             </div>
             <!-- Modal body -->
             <div class="p-6 space-y-6">
-                <form id="addEmployeeForm">
+                <form id="addService">
                     <div class="grid grid-cols-6 gap-6">
-                        <div class="col-span-6 sm:col-span-3">
-                            <label for="first-name"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Họ tên</label>
-                            <input type="text" name="ho_ten" id="ho_ten"
+                        <!-- Tên dịch vụ -->
+                        <div class="col-span-6 sm:col-span-6">
+                            <label for="ten_dich_vu"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tên dịch vụ</label>
+                            <input type="text" name="ten_dich_vu" id="ten_dich_vu"
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 placeholder="" required>
                         </div>
+
+                        <!-- Giá tiền -->
                         <div class="col-span-6 sm:col-span-3">
-                            <label for="gender"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Giới tính</label>
-                            <select name="gioi_tinh" id="gender"
+                            <label for="gia_tien"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Giá tiền</label>
+                            <input type="number" name="gia_tien" id="gia_tien"
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                placeholder="" required>
+                        </div>
+
+                        <!-- Thời gian hoàn thành -->
+                        <div class="col-span-6 sm:col-span-3">
+                            <label for="thoi_luong"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Thời gian hoàn
+                                thành (phút)</label>
+                            <input type="number" name="thoi_luong" id="thoi_luong"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 required>
-                                <option value="" disabled selected>Chọn giới tính</option>
-                                <option value="Nam">Nam</option>
-                                <option value="Nữ">Nữ</option>
-                            </select>
                         </div>
+                        <!-- Hình ảnh -->
                         <div class="col-span-6 sm:col-span-3">
-                            <label for="email"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                            <input type="email" name="email" id="email"
-                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="" required>
+                            <label class="mb-1 text-sm font-bold text-gray-900 dark:text-white">Hình ảnh dịch vụ</label>
+                            <div
+                                class="items-center sm:flex xl:block 2xl:flex sm:space-x-4 xl:space-x-0 2xl:space-x-4 ">
+                                <div class="max-w-lg mx-auto">
+                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                        for="user_avatar"></label>
+                                    <input name="hinh_anh" onchange="previewImage(event)"
+                                        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                        aria-describedby="user_avatar_help" id="hinh_anh" type="file" accept="image/*"
+                                        required>
+
+                                </div>
+                            </div>
+                            <!-- <div class="col-span-6 sm:col-span-6"> -->
+                            <!-- Hiển thị hình ảnh -->
+                            <div class="flex flex-wrap ">
+                                <div id="img-dich-vu" class="w-1/2 p-2">
+
+                                </div>
+                            </div>
+                            <!-- </div> -->
                         </div>
-                        <div class="col-span-6 sm:col-span-3">
-                            <label for="so_dien_thoai"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Số điện
-                                thoại</label>
-                            <input type="tel" name="so_dien_thoai" id="so_dien_thoai"
-                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="" required pattern="^[0-9]{10}$" maxlength="10" title="Chỉ nhập 10 chữ số">
+
+                        <!-- Mô tả -->
+                        <div class="col-span-6 sm:col-span-3 pb-10">
+                            <label for="mo_ta" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mô
+                                tả</label>
+                            <textarea id="mo_ta" rows="4" name="mo_ta"
+                                class="block p-2.5 w-full  text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"></textarea>
                         </div>
+
+
                     </div>
+
                     <!-- Modal footer -->
                     <div class="items-center p-6 border-t border-gray-200 rounded-b dark:border-gray-700">
                         <button type="submit"
@@ -357,11 +375,12 @@ group: crud
                     </div>
                 </form>
             </div>
+
         </div>
     </div>
 </div>
 
-<!-- Edit User Modal -->
+<!-- Edit service Modal -->
 <div class="fixed left-0 right-0 z-50 items-center justify-center hidden overflow-x-hidden overflow-y-auto top-4 md:inset-0 h-modal sm:h-full"
     id="edit-user-modal">
     <div class="relative w-full h-full max-w-2xl px-4 md:h-auto">
@@ -423,8 +442,7 @@ group: crud
             </div>
             <!-- Modal footer -->
             <div class="items-center p-6 border-t border-gray-200 rounded-b dark:border-gray-700">
-                <button
-                    data-modal-target="edit-user-modal" data-modal-toggle="edit-user-modal"
+                <button data-modal-target="edit-user-modal" data-modal-toggle="edit-user-modal"
                     class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                     type="submit">Lưu</button>
             </div>
@@ -433,7 +451,7 @@ group: crud
     </div>
 </div>
 
-<!-- Delete User Modal -->
+<!-- Delete service Modal -->
 <div class="fixed left-0 right-0 z-50 items-center justify-center hidden overflow-x-hidden overflow-y-auto top-4 md:inset-0 h-modal sm:h-full"
     id="delete-user-modal">
     <div class="relative w-full h-full max-w-md px-4 md:h-auto">
@@ -458,8 +476,8 @@ group: crud
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
-                <h3 class="mt-5 mb-6 text-lg text-gray-500 dark:text-gray-400">Xác nhận xóa tài khoản này?</h3>
-                <a id="deleteUserButton" onclick="deleteStaff()" data-modal-target="delete-user-modal"
+                <h3 class="mt-5 mb-6 text-lg text-gray-500 dark:text-gray-400">Xác nhận xóa dịch vụ này?</h3>
+                <a id="deleteUserButton" onclick="deleteService()" data-modal-target="delete-user-modal"
                     data-modal-toggle="delete-user-modal"
                     class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-base inline-flex items-center px-3 py-2.5 text-center mr-2 dark:focus:ring-red-800">
                     Xóa
@@ -475,213 +493,94 @@ group: crud
 </div>
 
 <script>
-    let idStaffDelete = 0;
-    let idStaffUpdate = 0;
-
-    function setStaffIdDelete(id) {
-        idStaffDelete = id;
+    let idServiceDel = 0;
+    function setIdServiceDel (id) {
+        idServiceDel = id;
     }
 
-    async function deleteStaff() {
-        try {
-            const response = await fetch(`http://localhost:3000/api/users/deleteEmployee/${idStaffDelete}`, {
+    function previewImage(event) {
+        const input = event.target;
+        const imgDiv = document.getElementById('img-dich-vu');
+
+        // Kiểm tra xem người dùng đã chọn file chưa
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+
+            // Xử lý khi ảnh được đọc
+            reader.onload = function (e) {
+                imgDiv.innerHTML = `<img src="${e.target.result}" alt="Hình ảnh dịch vụ" class="w-full h-40 object-cover rounded-lg" />`;
+            };
+
+            // Đọc file ảnh
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            // Nếu không có file nào được chọn, xóa ảnh cũ
+            imgDiv.innerHTML = '';
+        }
+    }
+
+    // Xử lý khi form thêm dịch vụ được submit
+    document.getElementById('addService').addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        // Lấy thông tin từ form
+        const formData = new FormData(this);
+        const data = {};
+        formData.forEach((value, key) => {
+            data[key] = value;
+        });
+
+        imgFiles = new FormData();
+        imgFiles.append('images', data.hinh_anh)
+        const imgUploadRes = await fetch('/api/upload/Images', {
+            method: 'POST',
+            body: imgFiles,
+        });
+        
+        const imgUploadResData = await imgUploadRes.json();
+        const uploadedImageUrls = imgUploadResData.imageUrls;
+        data.hinh_anh = uploadedImageUrls[0];
+
+        // Gửi request thêm dịch vụ
+        const response = await fetch('/api/services/addService', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+
+        // Nếu request thêm dịch vụ thành công
+        if (response.ok) {
+            // Hiển thị thông báo thành công
+            alert('Thêm dịch vụ thành công');
+
+            // Tải lại trang
+            window.location.reload();
+        } else {
+            // Nếu request thêm dịch vụ thất bại, hiển thị lỗi
+            alert(data.message);
+        }
+    });
+
+    async function deleteService() {
+        try{
+            const response = await fetch(`http://localhost:3000/api/services/deleteService/${idServiceDel}`, {
                 method: 'DELETE',
             });
 
             if (response.ok) {
-                loadUserList();
+                window.location.reload();
                 alert('Xóa nhân viên thành công!');
 
             } else {
                 alert('Có lỗi xảy ra khi xóa nhân viên.');
             }
-        } catch (error) {
-            console.error('Lỗi khi xóa nhân viên:', error);
-            alert('Có lỗi xảy ra khi xóa nhân viên.');
+        }
+        catch (error) {
+            console.error(error);
         }
     }
 
-    document.getElementById('addEmployeeForm').addEventListener('submit', async function (event) {
-        event.preventDefault(); // Ngừng gửi form mặc định
-
-        // Lấy dữ liệu từ form
-        const formData = new FormData(this);
-        const data = {};
-        formData.forEach((value, key) => {
-            data[key] = value;
-        });
-
-        // Gửi dữ liệu đến API
-        try {
-            const response = await fetch('http://localhost:3000/api/users/addEmployee', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
-
-            const result = await response.json();
-            if (response.ok) {
-                alert('Thêm nhân viên thành công!');
-                // // Đóng modal
-                // document.getElementById('add-user-modal').classList.add('hidden');
-
-                // Gọi AJAX để load lại danh sách nhân viên
-                loadUserList();
-                // window.location.reload();
-            } else {
-                alert('Có lỗi xảy ra: ' + result.message);
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Có lỗi xảy ra khi gửi yêu cầu.');
-        }
-    });
-
-    function populateEditForm(user) {
-        document.getElementById('ho_ten_update').value = user.ho_ten;
-        document.getElementById('gioi_tinh_update').value = user.gioi_tinh;
-        document.getElementById('email_update').value = user.email;
-        document.getElementById('so_dien_thoai_update').value = user.so_dien_thoai; 
-        idStaffUpdate = user.id;
-    }
-
-
-    // Hàm AJAX để load lại danh sách nhân viên
-    function loadUserList() {
-        fetch('http://localhost:3000/api/users/getAllEmployees')
-            .then(response => response.json())
-            .then(data => {
-                const employeeList = document.getElementById('employeeList');
-                employeeList.innerHTML = '';
-                data.data.forEach(user => {
-                    const tr = document.createElement('tr');
-                    tr.classList.add('hover:bg-gray-100', 'dark:hover:bg-gray-700');
-                    tr.innerHTML = `
-                    <td class="w-4 p-4">
-                        <div class="flex items-center">
-                            <input id="checkbox-${user.id}" aria-describedby="checkbox-1" type="checkbox"
-                                class="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:focus:ring-primary-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600">
-                            <label for="checkbox-${user.id}" class="sr-only">checkbox</label>
-                        </div>
-                    </td>
-                    <td class="flex items-center p-4 mr-12 space-x-6 whitespace-nowrap">
-                        <img class="w-10 h-10 rounded-full" src="${user.anh_dai_dien}" alt="${user.ho_ten} avatar">
-                        <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
-                            <div class="text-base font-semibold text-gray-900 dark:text-white">
-                                ${user.ho_ten}
-                            </div>
-                            <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
-                                ${user.email}
-                            </div>
-                        </div>
-                    </td>
-                    <td class="max-w-sm p-4 overflow-hidden text-base font-normal text-gray-500 truncate xl:max-w-xs dark:text-gray-400">
-                        ${user.so_dien_thoai}
-                    </td>
-                    <td class="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        ${user.gioi_tinh}
-                    </td>
-                    
-                    <td
-                        class="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    </td>
-                    <td class="p-4 text-base font-normal text-gray-900 whitespace-nowrap dark:text-white">
-                        <div class="flex items-center">
-                            ${user.trang_thai_tai_khoan === 'Hoạt động' ?
-                            `<div class="h-2.5 w-2.5 rounded-full bg-green-400 mr-2"></div>` :
-                            `<div class="h-2.5 w-2.5 rounded-full bg-red-500 mr-2"></div>`}
-                        </div>
-                    </td>
-                    <td class="p-4 space-x-2 whitespace-nowrap">
-                        <button type="button" data-modal-toggle="edit-user-modal" data-modal-target="edit-user-modal" 
-                                            class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z">
-                                                </path>
-                                                <path fill-rule="evenodd"
-                                                    d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
-                                                    clip-rule="evenodd"></path>
-                                            </svg>
-                                            Sửa
-                                        </button>
-                        <button type="button" data-id="${user.id}" type="button" onclick="setStaffIdDelete('${user.id}')" 
-                            data-modal-toggle="delete-user-modal" data-modal-target="delete-user-modal"
-                            class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900">
-                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd"
-                                                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                                                    clip-rule="evenodd"></path>
-                                            </svg>
-                            Xóa
-                        </button>
-                    </td>
-                `;
-                    employeeList.appendChild(tr);
-                });
-
-                // Tái khởi tạo modal và các sự kiện
-                const modalElements = document.querySelectorAll('[data-modal-toggle]');
-                modalElements.forEach((modalElement) => {
-                    if (!modalElement.hasAttribute('data-initialized')) {
-                        modalElement.addEventListener('click', () => {
-                            const target = modalElement.getAttribute('data-modal-target');
-                            const modal = document.getElementById(target);
-                            if (modal) {
-                                new Modal(modal).toggle();
-                            }
-                        });
-                        modalElement.setAttribute('data-initialized', 'true');
-                    }
-                });
-            })
-            .catch(error => {
-                console.error('Lỗi khi tải danh sách nhân viên:', error);
-            });
-    }
-
-
-    document.getElementById('updateStaffForm').addEventListener('submit', async function (event) {
-        event.preventDefault(); // Ngừng gửi form mặc định
-
-        // Lấy dữ liệu từ form
-        const formData = new FormData(this);
-        const data = {};
-        formData.forEach((value, key) => {
-            data[key] = value;
-        });
-
-        // Gửi dữ liệu đến API
-        try {
-            const response = await fetch(`/api/users/updateEmployee/${idStaffUpdate}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
-
-            const result = await response.json();
-            if (response.ok) {
-                alert('Cập nhật nhân viên thành công!');
-                // // Đóng modal
-                // document.getElementById('edit-user-modal').classList.add('hidden');
-
-                // Gọi AJAX để load lại danh sách nhân viên
-                loadUserList();
-                // window.location.reload();
-                
-            } else {
-                alert('Có lỗi xảy ra: ' + result.message);
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Có lỗi xảy ra khi gửi yêu cầu.');
-        }
-    });
 
 </script>

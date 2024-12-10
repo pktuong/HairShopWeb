@@ -115,6 +115,25 @@ app.get("/authentication/reset-password", (req, res) => {
   });
 });
 
+app.get("/crud/service/", async (req, res) => {
+  try {
+    // Gọi API để lấy danh sách dịch vụ
+    const response = await axios.get("http://localhost:3000/api/services/getAllServices");
+    const services = response.data; // Lấy dữ liệu dịch vụ
+    if (!services || services.length === 0) {
+      res.redirect('/pages/404');
+    } 
+    res.render("crud/service", {
+      layout: path.join(__dirname, "/layouts/dashboard"),
+      footer: false,
+      services,
+    });
+  } catch (error) {
+    console.error("Lỗi khi gọi API:", error.message);
+    res.redirect('/pages/404');
+  }
+});
+
 app.get("/crud/products", async (req, res) => {
   // const products = require("./data/products.json");
   // res.render("crud/products", {
@@ -126,6 +145,9 @@ app.get("/crud/products", async (req, res) => {
     // Gọi API để lấy danh sách sản phẩm
     const response = await axios.get("http://localhost:3000/api/customers/getAllHairStyles");
     const products = response.data.data; // Lấy dữ liệu sản phẩm
+    //gọi api lấy kiểu khuôn mặt /api/hairStyles/getFaceShapes
+    const response2 = await axios.get("http://localhost:3000/api/hairStyles/getFaceShapes");
+    const faceShapes = response2.data.data;
 
     // Kiểm tra nếu có dữ liệu sản phẩm
     if (products && products.length > 0) {
@@ -134,6 +156,7 @@ app.get("/crud/products", async (req, res) => {
         layout: path.join(__dirname, "/layouts/dashboard"),
         footer: false,
         products,
+        faceShapes
       });
     } else {
       res.redirect('/pages/404');
@@ -169,6 +192,32 @@ app.get("/crud/users", async (req, res) => {
     res.redirect('/pages/404');
   }
 });
+
+app.get("/crud/staff", async (req, res) => { 
+  try {
+    // Gọi API để lấy danh sách users
+    const response = await axios.get("http://localhost:3000/api/users/getAllEmployees");
+    const customers = response.data.data; 
+
+
+  // Kiểm tra nếu có dữ liệu khách hàng
+  if (customers && customers.length > 0) {
+    // Nếu có dữ liệu, render trang và truyền dữ liệu
+    res.render("crud/staff", {
+      layout: path.join(__dirname, "/layouts/dashboard"),
+      footer: false,
+      users: customers,        
+    });
+  } else {
+    res.redirect('/pages/404');
+  }
+
+} catch (error) {
+  console.error("Lỗi khi gọi API:", error.message);
+  res.redirect('/pages/404');
+}
+});
+
 app.get("/layouts/stacked", (req, res) => {
   res.render("layouts/stacked", {
     layout: path.join(__dirname, "/layouts/stacked-layout"),

@@ -11,32 +11,37 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // Một kiểu tóc thuộc một kiểu khuôn mặt
-      KieuToc.belongsTo(models.KieuKhuonMat, {
-        foreignKey: 'id_kieu_khuon_mat',
-        as: 'kieuKhuonMat',
-      });
 
-      // Một kiểu tóc có thể xuất hiện trong nhiều phiếu đặt
       KieuToc.hasMany(models.ChiTietPhieuDat, {
         foreignKey: 'id_kieu_toc',
         as: 'chiTietPhieuDats',
       });
 
-      // Một kiểu tóc có thể được nhiều tài khoản yêu thích
       KieuToc.belongsToMany(models.TaiKhoan, {
         through: models.KieuTocYeuThich,
         foreignKey: 'id_kieu_toc',
-        as: 'taiKhoansYeuThich',
+        as: 'tai_khoan',
+      });
+
+      // Add the reverse association for HinhAnhKieuToc
+      KieuToc.hasMany(models.HinhAnhKieuToc, {
+        foreignKey: 'id_kieu_toc',
+        as: 'hinh_anh_kieu_toc',
+      });
+
+      // Add the reverse association for KieuTocPhuHop
+      KieuToc.hasMany(models.KieuTocPhuHop, {
+        foreignKey: 'id_kieu_toc',
+        as: 'kieu_toc_phu_hop',
       });
     }
   }
   KieuToc.init({
     // id_kieu_toc: DataTypes.STRING,
     ten_kieu_toc: DataTypes.STRING,
-    hinh_anh: DataTypes.STRING,
     gioi_tinh: DataTypes.STRING,
     mo_ta: DataTypes.TEXT,
-    id_kieu_khuon_mat: DataTypes.INTEGER,
+    thoi_luong: DataTypes.INTEGER,
     gia_tien: DataTypes.DECIMAL
   }, {
     sequelize,

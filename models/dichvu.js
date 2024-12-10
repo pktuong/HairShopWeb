@@ -10,18 +10,19 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // Một dịch vụ có thể xuất hiện trong nhiều chi tiết phiếu đặt
-      DichVu.belongsToMany(models.ChiTietPhieuDat, {
-        through: models.ChiTietDichVu,
+      // Một dịch vụ có thể xuất hiện trong nhiều chi tiết dịch vụ
+      DichVu.hasMany(models.ChiTietDichVu, {
         foreignKey: 'id_dich_vu',
-        as: 'chiTietPhieuDats',
+        as: 'CTDV_DV',
       });
     }
   }
   DichVu.init({
     // id_dich_vu: DataTypes.STRING,
     ten_dich_vu: DataTypes.STRING,
-    mo_ta: DataTypes.TEXT,
+    mo_ta: DataTypes.TEXT, 
+    hinh_anh: DataTypes.STRING,
+    thoi_luong: DataTypes.INTEGER,
     gia_tien: DataTypes.DECIMAL
   }, {
     sequelize,

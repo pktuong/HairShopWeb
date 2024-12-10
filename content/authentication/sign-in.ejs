@@ -64,13 +64,26 @@ group: authentication
         const data = await response.json();
         // Xử lý thành công, ví dụ hiển thị thông báo
         
-        console.log('Token:', data.token); // Lưu token nếu cần
+        // console.log('Token:', data.token); // Lưu token nếu cần
   
         // Lưu token vào LocalStorage hoặc Cookie
         localStorage.setItem('authToken', data.token);
   
         // Chuyển hướng sang trang quản lý
-        window.location.href = '/';
+        if (data.data.id_phan_quyen === 2||data.data.id_phan_quyen === 1) {
+          window.location.href = '/';
+        }else{
+          alert('Tài khoản không có quyền truy cập');
+          localStorage.removeItem('authToken');
+          const response = await fetch('/api/logout', {
+            method: 'GET',
+          });
+
+          if (response.ok) {
+            window.location.reload();
+          }
+        }
+
       } catch (error) {
         // Hiển thị lỗi lên giao diện
         const errorMessage = document.getElementById('error-message');

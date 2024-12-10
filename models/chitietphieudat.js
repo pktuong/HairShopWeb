@@ -23,10 +23,9 @@ module.exports = (sequelize, DataTypes) => {
       });
 
       // Một chi tiết phiếu đặt có thể có nhiều dịch vụ đi kèm
-      ChiTietPhieuDat.belongsToMany(models.DichVu, {
-        through: models.ChiTietDichVu,
+      ChiTietPhieuDat.hasMany(models.ChiTietDichVu, {
         foreignKey: 'id_chi_tiet_phieu_dat',
-        as: 'dichVus',
+        as: 'chiTietDichVus',
       });
     }
   }

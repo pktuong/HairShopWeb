@@ -10,11 +10,12 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // Một kiểu khuôn mặt có nhiều kiểu tóc
-      KieuKhuonMat.hasMany(models.KieuToc, {
+      // define association here
+      KieuKhuonMat.hasMany(models.KieuTocPhuHop, {
         foreignKey: 'id_kieu_khuon_mat',
-        as: 'kieuTocs',
-      });
+        as: 'kieu_khuon_mat_phu_hop',
+      });    
+
     }
   }
   KieuKhuonMat.init({

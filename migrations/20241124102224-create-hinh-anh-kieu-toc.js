@@ -2,27 +2,24 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('KieuTocs', {
+    await queryInterface.createTable('HinhAnhKieuTocs', {
       id: {
         allowNull: false,
         autoIncrement: true,
-        type: Sequelize.INTEGER,
-        primaryKey: true
-      },
-      ten_kieu_toc: {
-        type: Sequelize.STRING
-      },
-      gioi_tinh: {
-        type: Sequelize.STRING
-      },
-      mo_ta: {
-        type: Sequelize.TEXT
-      },
-      thoi_luong: {
+        primaryKey: true,
         type: Sequelize.INTEGER
       },
-      gia_tien: {
-        type: Sequelize.DECIMAL
+      id_kieu_toc: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'KieuTocs',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'        
+      },
+      url_anh: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -35,6 +32,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('KieuTocs');
+    await queryInterface.dropTable('HinhAnhKieuTocs');
   }
 };

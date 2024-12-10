@@ -15,6 +15,12 @@ module.exports = {
       mo_ta: {
         type: Sequelize.TEXT
       },
+      hinh_anh: {
+        type: Sequelize.STRING
+      },
+      thoi_luong: {
+        type: Sequelize.INTEGER
+      },
       gia_tien: {
         type: Sequelize.DECIMAL
       },
