@@ -201,6 +201,7 @@ group: crud
                                     </td>
                                     <td class="p-4 space-x-2 whitespace-nowrap">
                                         <button type="button" data-modal-toggle="edit-user-modal"
+                                            onclick="populateUpdateForm(<%= JSON.stringify(service) %>)"
                                             data-modal-target="edit-user-modal"
                                             class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                                             <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"
@@ -215,7 +216,8 @@ group: crud
                                             Sửa
                                         </button>
                                         <button type="button" data-modal-toggle="delete-user-modal"
-                                            data-modal-target="delete-user-modal" onclick="setIdServiceDel('<%= service.id %>')"
+                                            data-modal-target="delete-user-modal"
+                                            onclick="setIdServiceDel('<%= service.id %>')"
                                             class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900">
                                             <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -389,7 +391,7 @@ group: crud
             <!-- Modal header -->
             <div class="flex items-start justify-between p-5 border-b rounded-t dark:border-gray-700">
                 <h3 class="text-xl font-semibold dark:text-white">
-                    Edit user
+                    Chỉnh sửa thông tin dịch vụ
                 </h3>
                 <button type="button"
                     class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-700 dark:hover:text-white"
@@ -403,51 +405,82 @@ group: crud
             </div>
             <!-- Modal body -->
             <div class="p-6 space-y-6">
-                <form id="updateStaffForm">
+                <form id="updateServiceForm">
                     <div class="grid grid-cols-6 gap-6">
-                        <div class="col-span-6 sm:col-span-3">
-                            <label for="ho_ten_update"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Họ tên</label>
-                            <input type="text" name="ho_ten" id="ho_ten_update"
+                        <!-- Tên dịch vụ -->
+                        <div class="col-span-6 sm:col-span-6">
+                            <label for="ten_dich_vu"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tên dịch vụ</label>
+                            <input type="text" name="ten_dich_vu" id="ten_dich_vu_update"
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 placeholder="" required>
                         </div>
+
+                        <!-- Giá tiền -->
                         <div class="col-span-6 sm:col-span-3">
-                            <label for="gioi_tinh_update"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Giới tính</label>
-                            <select name="gioi_tinh" id="gioi_tinh_update"
+                            <label for="gia_tien"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Giá tiền</label>
+                            <input type="number" name="gia_tien" id="gia_tien_update"
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                placeholder="" required>
+                        </div>
+
+                        <!-- Thời gian hoàn thành -->
+                        <div class="col-span-6 sm:col-span-3">
+                            <label for="thoi_luong"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Thời gian hoàn
+                                thành (phút)</label>
+                            <input type="number" name="thoi_luong" id="thoi_luong_update"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 required>
-                                <option value="" disabled selected>Chọn giới tính</option>
-                                <option value="Nam">Nam</option>
-                                <option value="Nữ">Nữ</option>
-                            </select>
                         </div>
+                        <!-- Hình ảnh -->
                         <div class="col-span-6 sm:col-span-3">
-                            <label for="email_update"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                            <input type="email" name="email" id="email_update"
-                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="" required>
+                            <label class="mb-1 text-sm font-bold text-gray-900 dark:text-white">Hình ảnh dịch vụ</label>
+                            <div
+                                class="items-center sm:flex xl:block 2xl:flex sm:space-x-4 xl:space-x-0 2xl:space-x-4 ">
+                                <div class="max-w-lg mx-auto">
+                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                        for="user_avatar"></label>
+                                    <div class="mb-3 flex items-center justify-center w-full">
+                                        <label for="hinh_anh_update"
+                                            class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                                            <div class="flex flex-col items-center justify-center p-3">
+                                                <span class="font-semibold">Thêm ảnh mới</span>
+                                            </div>
+                                            <input id="hinh_anh_update" name="hinh_anh" type="file" class="hidden" />
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="col-span-6 sm:col-span-6"> -->
+                            <!-- Hiển thị hình ảnh -->
+                            <div class="flex flex-wrap ">
+                                <div id="img-dich-vu_update" class="w-1/2 p-2">
+
+                                </div>
+                            </div>
+                            <!-- </div> -->
                         </div>
-                        <div class="col-span-6 sm:col-span-3">
-                            <label for="so_dien_thoai_update"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Số điện
-                                thoại</label>
-                            <input type="tel" name="so_dien_thoai" id="so_dien_thoai_update"
-                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="" required pattern="^[0-9]{10}$" maxlength="10" title="Chỉ nhập 10 chữ số">
+
+                        <!-- Mô tả -->
+                        <div class="col-span-6 sm:col-span-3 pb-10">
+                            <label for="mo_ta" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mô
+                                tả</label>
+                            <textarea id="mo_ta_update" rows="4" name="mo_ta"
+                                class="block p-2.5 w-full  text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"></textarea>
                         </div>
                     </div>
+                    <!-- Modal footer -->
+                    <div class="items-center p-6 border-t border-gray-200 rounded-b dark:border-gray-700">
+                        <button data-modal-target="edit-user-modal" data-modal-toggle="edit-user-modal"
+                            class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                            type="submit">Lưu</button>
+                    </div>
+                </form>
             </div>
-            <!-- Modal footer -->
-            <div class="items-center p-6 border-t border-gray-200 rounded-b dark:border-gray-700">
-                <button data-modal-target="edit-user-modal" data-modal-toggle="edit-user-modal"
-                    class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                    type="submit">Lưu</button>
-            </div>
-            </form>
         </div>
+
     </div>
 </div>
 
@@ -494,10 +527,12 @@ group: crud
 
 <script>
     let idServiceDel = 0;
-    function setIdServiceDel (id) {
+    function setIdServiceDel(id) {
         idServiceDel = id;
     }
-
+    let imageUpdate = [];
+    let idServiceUpdate = 0;
+    let imgOld = '';
     function previewImage(event) {
         const input = event.target;
         const imgDiv = document.getElementById('img-dich-vu');
@@ -519,6 +554,54 @@ group: crud
         }
     }
 
+    function populateUpdateForm(service) {
+        document.getElementById('ten_dich_vu_update').value = service.ten_dich_vu;
+        document.getElementById('gia_tien_update').value = service.gia_tien;
+        document.getElementById('thoi_luong_update').value = service.thoi_luong;
+        document.getElementById('mo_ta_update').value = service.mo_ta;
+        imgOld = service.hinh_anh;
+        // document.getElementById('hinh_anh_update').value =service.hinh_anh;
+        reloadUpdateImg(service.hinh_anh);
+        idServiceUpdate = service.id;
+    }
+
+    function reloadUpdateImg(img) {
+        const imgDiv = document.getElementById('img-dich-vu_update');
+        imgDiv.innerHTML = '';
+        // Kiểm tra xem người dùng đã chọn file chưa
+        if (img) {
+            const imgElement = document.createElement('img');
+            imgElement.src = img;
+            imgElement.alt = `Hình ảnh dịch vụ`;
+            imgElement.className = 'w-full h-40 object-cover rounded-lg';
+            imgDiv.appendChild(imgElement);
+
+        } else {
+            // Nếu không có file nào được chọn, xóa ảnh cũ
+            imgDiv.innerHTML = '';
+        }
+    }
+
+    document.getElementById('hinh_anh_update').onchange = function (event) {
+        const input = event.target;
+        const imgDiv = document.getElementById('img-dich-vu_update');
+
+        // Kiểm tra xem người dùng đã chọn file chưa
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                imgDiv.innerHTML = `<img src="${e.target.result}" alt="Hình ảnh dịch vụ" class="w-full h-40 object-cover rounded-lg" />`;
+                imageUpdate.push({
+                    url: e.target.result,
+                    file: input.files[0]
+                });
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+        // document.getElementById('hinh_anh_update').value = '';
+
+    }
+
     // Xử lý khi form thêm dịch vụ được submit
     document.getElementById('addService').addEventListener('submit', async function (e) {
         e.preventDefault();
@@ -536,7 +619,7 @@ group: crud
             method: 'POST',
             body: imgFiles,
         });
-        
+
         const imgUploadResData = await imgUploadRes.json();
         const uploadedImageUrls = imgUploadResData.imageUrls;
         data.hinh_anh = uploadedImageUrls[0];
@@ -563,8 +646,50 @@ group: crud
         }
     });
 
+    document.getElementById('updateServiceForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        // Lấy thông tin từ form
+        const formData = new FormData(this);
+        const data = {};
+        formData.forEach((value, key) => {
+            data[key] = value;
+        });
+
+        if (imageUpdate.length > 0) {
+            imgFiles = new FormData();
+            imgFiles.append('images', imageUpdate[0].file)
+            const imgUploadRes = await fetch('/api/upload/Images', {
+                method: 'POST',
+                body: imgFiles,
+            });
+            const imgUploadResData = await imgUploadRes.json();
+            const uploadedImageUrls = imgUploadResData.imageUrls;
+            data.hinh_anh = uploadedImageUrls[0];
+        }
+        else {
+            data.hinh_anh = imgOld;
+        }
+        const response = await fetch(`/api/services/updateService/${idServiceUpdate}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+
+        if (response.ok) {
+            alert('Cập nhật dịch vụ thành công');
+            window.location.reload();
+        } else {
+            alert('Có lỗi xảy ra khi cập nhật dịch vụ');
+        }
+
+
+    })
+
     async function deleteService() {
-        try{
+        try {
             const response = await fetch(`http://localhost:3000/api/services/deleteService/${idServiceDel}`, {
                 method: 'DELETE',
             });

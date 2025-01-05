@@ -7,6 +7,8 @@ const { KieuKhuonMat } = require("../models");
 const { KieuTocPhuHop } = require("../models");
 const { HinhAnhKieuToc } = require("../models");
 const { KieuTocYeuThich } = require("../models");
+const { DanhGiaKieuToc } = require("../models");
+const { TaiKhoan } = require("../models");
 
 // Lấy danh sách kiểu tóc kèm hình ảnh và kiểu khuôn mặt phù hợp
 exports.getAllHairStyles = async (req, res) => {
@@ -16,6 +18,10 @@ exports.getAllHairStyles = async (req, res) => {
         {
           model: HinhAnhKieuToc,
           as: "hinh_anh_kieu_toc",
+        },
+        {
+          model: DanhGiaKieuToc,
+          as: "danh_gia_kieu_toc",
         },
         {
           model: KieuTocPhuHop,
@@ -44,6 +50,55 @@ exports.getAllHairStyles = async (req, res) => {
   }
 };
 
+//Lấy kiểu tóc theo id
+exports.getHairStyleById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const hairStyle = await KieuToc.findOne({
+      where: {
+        id:id,
+      },
+      include: [
+        {
+          model: HinhAnhKieuToc,
+          as: "hinh_anh_kieu_toc",
+          attributes: ["id","url_anh"],
+        },
+        {
+          model: DanhGiaKieuToc,
+          as: "danh_gia_kieu_toc",
+          attributes: ["id","muc_do_hai_long", "phan_hoi", "createdAt"],
+          include: [
+            {
+              model: TaiKhoan,
+              as: "TaiKhoanDanhGia",
+              attributes : ["id","ho_ten", "anh_dai_dien"],
+            },
+          ],
+        },
+        {
+          model: KieuTocPhuHop,
+          as: "kieu_toc_phu_hop",
+          attributes: ["id_kieu_khuon_mat"],
+          include: [
+            {
+              model: KieuKhuonMat,
+              as: "kieu_khuon_mat_phu_hop",
+              attributes: ["kieu_khuon_mat", "hinh_anh"],
+            },
+          ],
+        },
+      ],
+    });
+    res.status(200).json({
+      message: "Lấy dữ liệu thành công!",
+      data: hairStyle,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Lỗi server" });
+  }
+}
+
 //Lấy kiểu khuôn mặt
 exports.getFaceShapes = async (req, res) => {
   try {
@@ -51,6 +106,62 @@ exports.getFaceShapes = async (req, res) => {
     res.status(200).json({
       message: "Lấy dữ liệu thành công!",
       data: faceShapes,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Lỗi server" });
+  }
+};
+
+//Lấy kiểu tóc theo khuôn mặt
+exports.getHairStylesByFaceShape = async (req, res) => {
+  try {
+    const { kieu_khuon_mat } = req.params;
+    const faceShape = await KieuKhuonMat.findOne({
+      where: {
+        kieu_khuon_mat: kieu_khuon_mat,
+      },
+    });
+    // const hairStyles = await KieuTocPhuHop.findAll({
+    //   where: {
+    //     id_kieu_khuon_mat: faceShape.id,
+    //   },
+    //   include: [
+    //     {
+    //       model: KieuToc,
+    //       as: "kieu_toc_phu_hop",
+    //       include: [
+    //         {
+    //           model: HinhAnhKieuToc,
+    //           as: "hinh_anh_kieu_toc",
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // });
+    const hairStyles = await KieuToc.findAll({
+      include: [
+        {
+          model: HinhAnhKieuToc,
+          as: "hinh_anh_kieu_toc",
+        },
+        {
+          model: KieuTocPhuHop,
+          as: "kieu_toc_phu_hop",
+          where: {
+            id_kieu_khuon_mat: faceShape.id,
+          },
+          include: [
+            {
+              model: KieuKhuonMat,
+              as: "kieu_khuon_mat_phu_hop",
+            },
+          ],
+        },
+      ],
+    });
+    res.status(200).json({
+      message: "Lấy dữ liệu thành công!",
+      data: hairStyles,
     });
   } catch (error) {
     return res.status(500).json({ message: "Lỗi server" });
@@ -332,3 +443,105 @@ exports.deleteHairStyle = async (req, res) => {
     return res.status(500).json({ message: "Lỗi server" });
   }
 };
+
+//Xem danh sách kiểu tóc yêu thích của khách hàng
+exports.getFavoriteHairStyles = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const favoriteHairStyles = await KieuTocYeuThich.findAll({
+      where: {
+        id_tai_khoan: id,
+      },
+      include: [
+        {
+          model: KieuToc,
+          as: "kieu_toc",
+          include: [
+            {
+              model: HinhAnhKieuToc,
+              as: "hinh_anh_kieu_toc",
+            },
+            {
+              model: DanhGiaKieuToc,
+              as: "danh_gia_kieu_toc",
+            },
+          ],
+        },
+      ],
+    });
+
+    res.status(200).json({
+      message: "Lấy dữ liệu thành công!",
+      data: favoriteHairStyles,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Lỗi server" });
+  }
+};
+
+exports.addFavoriteHairStyle = async (req, res) => {
+  try {
+    const { id_tai_khoan, id_kieu_toc } = req.body;
+    const existed = await KieuTocYeuThich.findOne({
+      where: {
+        id_tai_khoan,
+        id_kieu_toc,
+      },
+    });
+
+    if (existed) {
+      return res.status(400).json({ message: "Kiểu tóc đã tồn tại" });
+    }
+
+    await KieuTocYeuThich.create({
+      id_tai_khoan,
+      id_kieu_toc,
+    });
+
+    return res.status(200).json({ message: "Thêm kiểu tóc vào yêu thích thành công" });
+  } catch (error) {
+    return res.status(500).json({ message: "Lỗi server" });
+  }
+}
+
+exports.deleteFavoriteHairStyle = async (req, res) => {
+  try {
+    const { id_tai_khoan, id_kieu_toc } = req.body;
+    const favoriteHairStyle = await KieuTocYeuThich.findOne({
+      where: {
+        id_tai_khoan,
+        id_kieu_toc,
+      },
+    });
+
+    if (!favoriteHairStyle) {
+      return res.status(404).json({ message: "Kiểu tóc không tồn tại" });
+    }
+
+    await favoriteHairStyle.destroy();
+
+    return res.status(200).json({ message: "Xóa kiểu tóc khỏi yêu thích thành công" });
+  } catch (error) {
+    return res.status(500).json({ message: "Lỗi server" });
+  }
+}
+
+exports.checkFavoriteHairStyle = async (req, res) => {
+  try {
+    const { id_tai_khoan, id_kieu_toc } = req.query;
+    const favoriteHairStyle = await KieuTocYeuThich.findOne({
+      where: {
+        id_tai_khoan,
+        id_kieu_toc,
+      },
+    });
+    let isExisted = false;
+    if (favoriteHairStyle) {
+      isExisted = true;
+    }
+
+    return res.status(200).json({ isExisted });
+  } catch (error) {
+    return res.status(500).json({ message: "Lỗi server" });
+  }
+}

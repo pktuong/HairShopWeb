@@ -8,7 +8,7 @@ group: authentication
 <div class="flex flex-col items-center justify-center px-6 pt-8 mx-auto md:h-screen pt:mt-0 dark:bg-gray-900">
     <a href="/" class="flex items-center justify-center mb-8 text-2xl font-semibold lg:mb-10 dark:text-white">
         <img src="/images/logo.svg" class="mr-4 h-11" alt="FlowBite Logo">
-        <span>Trang quản trị viên</span>  
+        <span>Trang quản trị </span>  
     </a>
     <!-- Card -->
     <div class="w-full max-w-xl p-6 space-y-8 sm:p-8 bg-white rounded-lg shadow dark:bg-gray-800">
@@ -24,7 +24,7 @@ group: authentication
                 <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mật khẩu</label>
                 <input type="password" name="mat_khau" id="mat_khau" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
             </div>
-            <div class="flex items-start">
+            <div class="hidden flex items-start">
                 <div class="flex items-center h-5">
                     <input id="remember" aria-describedby="remember" name="remember" type="checkbox" class="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:focus:ring-primary-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600" >
                 </div>
@@ -33,8 +33,8 @@ group: authentication
                 </div>
                 <a href="#" class="ml-auto text-sm text-primary-700 hover:underline dark:text-primary-500">Lost Password?</a>
             </div>
-            <button type="submit" class="w-full px-5 py-3 text-base font-medium text-center text-white bg-primary-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 sm:w-auto dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Login to your account</button>
-            <div class="text-sm font-medium text-gray-500 dark:text-gray-400">
+            <button type="submit" class="w-full px-5 py-3 text-base font-medium text-center text-white bg-primary-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 sm:w-auto dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Đăng nhập</button>
+            <div class="hidden text-sm font-medium text-gray-500 dark:text-gray-400">
                 Not registered? <a class="text-primary-700 hover:underline dark:text-primary-500">Create account</a>
             </div>
         </form>
@@ -48,7 +48,7 @@ group: authentication
       const mat_khau = document.getElementById('mat_khau').value;
   
       try {
-        const response = await fetch('/api/authentication/sign-in', { // Thay URL này bằng endpoint API của bạn
+        const response = await fetch('/api/authentication/admin-sign-in', { // Thay URL này bằng endpoint API của bạn
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -58,6 +58,7 @@ group: authentication
   
         if (!response.ok) {
           const error = await response.json();
+          alert(error.message || 'Đăng nhập thất bại!');
           throw new Error(error.message || 'Đăng nhập thất bại!');
         }
   
@@ -80,6 +81,7 @@ group: authentication
           });
 
           if (response.ok) {
+            alert('Đăng nhập thành công');
             window.location.reload();
           }
         }

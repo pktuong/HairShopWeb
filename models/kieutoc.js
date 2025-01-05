@@ -34,6 +34,17 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'id_kieu_toc',
         as: 'kieu_toc_phu_hop',
       });
+
+      // Add the reverse association for KieuTocYeuThich
+      KieuToc.hasMany(models.KieuTocYeuThich, {
+        foreignKey: 'id_kieu_toc',
+        as: 'kieu_toc_yeu_thich',
+      });
+
+      KieuToc.hasMany(models.DanhGiaKieuToc, {
+        foreignKey: 'id_kieu_toc',
+        as: 'danh_gia_kieu_toc',
+      });
     }
   }
   KieuToc.init({

@@ -9,9 +9,18 @@ const authController = require('../controllers/authController');
 
 // Đăng kí
 router.post('/api/authentication/customer-register', authController.customerRegister);
+// Gửi mã OTP
+router.post('/api/authentication/send-otp', authController.sendOTPVerifiEmail);
+// Xác thực mã OTP
+router.post('/api/authentication/verify-otp', authController.verifyOTP);
 
-// Xử lý đăng nhập
-router.post('/api/authentication/sign-in', authController.postLogin);
+// Xử lý đăng nhập admin
+router.post('/api/authentication/admin-sign-in', authController.postAdminLogin);
+// Xử lý đăng nhập người dùng
+router.post('/api/authentication/customer-sign-in', authController.postCustomerLogin);
+
+//Quên mật khẩu
+router.put('/api/authentication/reset-password', authController.resetPassword);
 
 // Đăng xuất
 router.get('/api/logout', authController.logout);

@@ -43,6 +43,36 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
+    await queryInterface.bulkInsert('ChiTietPhieuDats', [
+      {
+        id: 1,
+        id_phieu_dat: 1,
+        ten_khach_hang: 'Lê Văn Cường',
+        id_kieu_toc: 1,
+        phi_lam_toc: 150000,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: 2,
+        id_phieu_dat: 2,
+        ten_khach_hang: 'Phạm Thị Dung',
+        id_kieu_toc: 2,
+        phi_lam_toc: 200000,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      
+      {
+        id: 3,
+        id_phieu_dat: 3,
+        ten_khach_hang: 'Phạm Thị Dung',
+        id_kieu_toc: 2,
+        phi_lam_toc: 200000,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    ]);
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('ChiTietPhieuDats');

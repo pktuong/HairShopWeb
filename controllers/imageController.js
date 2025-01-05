@@ -38,3 +38,6 @@ exports.uploadImages = async (req, res) => {
     res.status(500).json({ error: "Failed to upload product images" });
   }
 };
+
+
+

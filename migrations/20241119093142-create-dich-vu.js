@@ -33,6 +33,28 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
+    await queryInterface.bulkInsert('DichVus', [
+      {
+        id: 1,
+        ten_dich_vu: 'Gội đầu',
+        mo_ta: 'Gội đầu và massage da đầu',
+        hinh_anh: 'https://res.cloudinary.com/dli4qf7ox/image/upload/v1733802054/HairSalon/m9pbidjplyo0kr57wcp2.webp',
+        thoi_luong: 30,
+        gia_tien: 50000,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: 2,
+        ten_dich_vu: 'Nhuộm tóc',
+        mo_ta: 'Dịch vụ nhuộm tóc thời trang',
+        hinh_anh: 'https://res.cloudinary.com/dli4qf7ox/image/upload/v1733802054/HairSalon/m9pbidjplyo0kr57wcp2.webp',
+        thoi_luong: 60,
+        gia_tien: 300000,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    ]);
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('DichVus');

@@ -5944,7 +5944,7 @@ var flowbite_datepicker_1 = __nested_webpack_require_208527__(554);
 var Default = {
     defaultDatepickerId: null,
     autohide: false,
-    format: 'mm/dd/yyyy',
+    format: 'dd/mm/yyyy',
     maxDate: null,
     minDate: null,
     orientation: 'bottom',
@@ -8724,9 +8724,25 @@ var apexcharts_common = __webpack_require__(781);
 var apexcharts_common_default = /*#__PURE__*/__webpack_require__.n(apexcharts_common);
 ;// ./src/charts.js
 
+function transformRevenueData(apiData) {
+	const seriesData = apiData.map(item => item.doanh_thu);
+	const categories = apiData.map(item => {
+    const date = item.ngay.split('-');
+    return `${date[2]}/${date[1]}`;
+	});
+	return { seriesData, categories };
+}
 
-const getMainChartOptions = () => {
-	let mainChartColors = {}
+
+async function getMainChartOptions() {
+	// Gọi API để lấy dữ liệu
+	const response = await fetch('http://localhost:3000/api/report/getRevenueIn7Days'); // Đường dẫn API
+	const result = await response.json();
+
+	// Chuyển đổi dữ liệu
+	const { seriesData, categories } = transformRevenueData(result.data);
+
+	let mainChartColors = {};
 
 	if (document.documentElement.classList.contains('dark')) {
 		mainChartColors = {
@@ -8741,7 +8757,7 @@ const getMainChartOptions = () => {
 			labelColor: '#6B7280',
 			opacityFrom: 0.45,
 			opacityTo: 0,
-		}
+		};
 	}
 
 	return {
@@ -8751,19 +8767,19 @@ const getMainChartOptions = () => {
 			fontFamily: 'Inter, sans-serif',
 			foreColor: mainChartColors.labelColor,
 			toolbar: {
-				show: false
-			}
+				show: false,
+			},
 		},
 		fill: {
 			type: 'gradient',
 			gradient: {
 				enabled: true,
 				opacityFrom: mainChartColors.opacityFrom,
-				opacityTo: mainChartColors.opacityTo
-			}
+				opacityTo: mainChartColors.opacityTo,
+			},
 		},
 		dataLabels: {
-			enabled: false
+			enabled: false,
 		},
 		tooltip: {
 			style: {
@@ -8777,31 +8793,26 @@ const getMainChartOptions = () => {
 			strokeDashArray: 1,
 			padding: {
 				left: 35,
-				bottom: 15
-			}
+				bottom: 15,
+			},
 		},
 		series: [
 			{
-				name: 'Revenue',
-				data: [6356, 6218, 6156, 6526, 6356, 6256, 6056],
-				color: '#1A56DB'
+				name: 'Doanh thu',
+				data: seriesData,
+				color: '#1A56DB',
 			},
-			{
-				name: 'Revenue (previous period)',
-				data: [6556, 6725, 6424, 6356, 6586, 6756, 6616],
-				color: '#FDBA8C'
-			}
 		],
 		markers: {
 			size: 5,
 			strokeColors: '#ffffff',
 			hover: {
 				size: undefined,
-				sizeOffset: 3
-			}
+				sizeOffset: 3,
+			},
 		},
 		xaxis: {
-			categories: ['01 Feb', '02 Feb', '03 Feb', '04 Feb', '05 Feb', '06 Feb', '07 Feb'],
+			categories: categories,
 			labels: {
 				style: {
 					colors: [mainChartColors.labelColor],
@@ -8826,27 +8837,27 @@ const getMainChartOptions = () => {
 			},
 		},
 		yaxis: {
-			labels: {
-				style: {
-					colors: [mainChartColors.labelColor],
-					fontSize: '14px',
-					fontWeight: 500,
-				},
-				formatter: function (value) {
-					return '$' + value;
-				}
-			},
-		},
+      labels: {
+        style: {
+          colors: [mainChartColors.labelColor],
+          fontSize: '14px',
+          fontWeight: 500,
+        },
+        formatter: function (value) {
+          return value.toLocaleString('vi-VN') + ' đ';
+        },
+      },
+    },    
 		legend: {
 			fontSize: '14px',
 			fontWeight: 500,
 			fontFamily: 'Inter, sans-serif',
 			labels: {
-				colors: [mainChartColors.labelColor]
+				colors: [mainChartColors.labelColor],
 			},
 			itemMargin: {
-				horizontal: 10
-			}
+				horizontal: 10,
+			},
 		},
 		responsive: [
 			{
@@ -8854,24 +8865,28 @@ const getMainChartOptions = () => {
 				options: {
 					xaxis: {
 						labels: {
-							show: false
-						}
-					}
-				}
-			}
-		]
+							show: false,
+						},
+					},
+				},
+			},
+		],
 	};
 }
 
 if (document.getElementById('main-chart')) {
-	const chart = new (apexcharts_common_default())(document.getElementById('main-chart'), getMainChartOptions());
-	chart.render();
+	(async () => {
+		const chartOptions = await getMainChartOptions();
+		const chart = new (apexcharts_common_default())(document.getElementById('main-chart'), chartOptions);
+		chart.render();
 
-	// init again when toggling dark mode
-	document.addEventListener('dark-mode', function () {
-		chart.updateOptions(getMainChartOptions());
-	});
+		// Cập nhật khi bật chế độ dark mode
+		document.addEventListener('dark-mode', async function () {
+			chart.updateOptions(await getMainChartOptions());
+		});
+	})();
 }
+
 
 if (document.getElementById('new-products-chart')) {
 	const options = {
@@ -9236,50 +9251,65 @@ if (document.getElementById('week-signups-chart')) {
 	});
 }
 
-const getTrafficChannelsChartOptions = () => {
+// Hàm chuyển đổi dữ liệu từ API
+function transformAppointmentData(apiData) {
+	const series = apiData
+		.filter(item => item.trang_thai) 
+		.map(item => item.phan_tram); // Tạo mảng phần trăm
 
-	let trafficChannelsChartColors = {}
+	const labels = apiData
+		.filter(item => item.trang_thai)
+		.map(item => item.trang_thai);
+
+	return { series, labels };
+}
+
+// Cập nhật hàm lấy cấu hình biểu đồ
+const getTrafficChannelsChartOptions = (data) => {
+	const { series, labels } = transformAppointmentData(data);
+
+	let trafficChannelsChartColors = {};
 
 	if (document.documentElement.classList.contains('dark')) {
 		trafficChannelsChartColors = {
-			strokeColor: '#1f2937'
+			strokeColor: '#1f2937',
 		};
 	} else {
 		trafficChannelsChartColors = {
-			strokeColor: '#ffffff'
-		}
+			strokeColor: '#ffffff',
+		};
 	}
 
 	return {
-		series: [70, 5, 25],
-		labels: ['Desktop', 'Tablet', 'Phone'],
-		colors: ['#16BDCA', '#FDBA8C', '#1A56DB'],
+		series, // Dữ liệu tỉ lệ
+		labels, // Nhãn trạng thái
+		colors: ['#16BDCA', '#FDBA8C', '#1A56DB'], // Màu sắc tương ứng
 		chart: {
 			type: 'donut',
 			height: 400,
 			fontFamily: 'Inter, sans-serif',
 			toolbar: {
-				show: false
+				show: false,
 			},
 		},
 		responsive: [{
 			breakpoint: 430,
 			options: {
-			  chart: {
-				height: 300
-			  }
-			}
+				chart: {
+					height: 300,
+				},
+			},
 		}],
 		stroke: {
-			colors: [trafficChannelsChartColors.strokeColor]
+			colors: [trafficChannelsChartColors.strokeColor],
 		},
 		states: {
 			hover: {
 				filter: {
 					type: 'darken',
-					value: 0.9
-				}
-			}
+					value: 0.9,
+				},
+			},
 		},
 		tooltip: {
 			shared: true,
@@ -9288,42 +9318,75 @@ const getTrafficChannelsChartOptions = () => {
 			inverseOrder: true,
 			style: {
 				fontSize: '14px',
-				fontFamily: 'Inter, sans-serif'
+				fontFamily: 'Inter, sans-serif',
 			},
 			x: {
 				show: true,
 				formatter: function (_, { seriesIndex, w }) {
 					const label = w.config.labels[seriesIndex];
-					return label
-				}
+					return label;
+				},
 			},
 			y: {
-				formatter: function (value) {
-					return value + '%';
-				}
-			}
+				formatter: function (value, { seriesIndex }) {
+					return `${value.toFixed(2)}% (${data[seriesIndex]?.so_luong || 0} lịch hẹn)`;
+				},
+			},
 		},
 		grid: {
-			show: false
+			show: false,
 		},
 		dataLabels: {
-			enabled: false
+			enabled: false,
 		},
 		legend: {
-			show: false
+			show: false,
 		},
 	};
-}
+};
 
-if (document.getElementById('traffic-by-device')) {
-	const chart = new (apexcharts_common_default())(document.getElementById('traffic-by-device'), getTrafficChannelsChartOptions());
-	chart.render();
+// Gọi API và render biểu đồ
+fetch('http://localhost:3000/api/report/getAppointmentStatusInMonth')
+	.then(response => response.json())
+	.then(data => {
+		if (document.getElementById('traffic-by-device')) {
+			const chart = new (apexcharts_common_default())(
+				document.getElementById('traffic-by-device'),
+				getTrafficChannelsChartOptions(data.data)
+			);
+			chart.render();
 
-	// init again when toggling dark mode
-	document.addEventListener('dark-mode', function () {
-		chart.updateOptions(getTrafficChannelsChartOptions());
-	});
-}
+			// Cập nhật biểu đồ khi đổi chế độ sáng/tối
+			document.addEventListener('dark-mode', function () {
+				chart.updateOptions(getTrafficChannelsChartOptions(data.data));
+			});
+		}
+    if (document.getElementById('traffic-by-status')){      
+      const apptsInfo = document.getElementById('traffic-by-status');
+      apptsInfo.innerHTML = '';
+      data.data.forEach(appt => {
+        if (appt.trang_thai){
+          const div = document.createElement('div');
+          div.innerHTML = `          
+
+            <h3 class="text-gray-500 dark:text-gray-400">${appt.trang_thai}</h3>
+            <h4 class="text-xl font-bold dark:text-white">
+              ${appt.so_luong} đơn
+            </h4>          
+          `
+          apptsInfo.appendChild(div);
+        }else{
+          const span = document.getElementById('tong-so-lich-hen')
+          if (span){
+            span.innerText = `${appt.tong_so_lich_hen} lịch hẹn đã được đặt`;
+          }
+        }
+      });
+    }
+	})
+	.catch(error => console.error('Error fetching appointment data:', error));
+
+
 
 // EXTERNAL MODULE: ./src/dark-mode.js
 var dark_mode = __webpack_require__(4);

@@ -16,6 +16,43 @@ exports.getAllCustomers = async (req, res) => {
     }
 }
 
+//lấy thông tin tài khoản theo id
+exports.getCustomerById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const customer = await TaiKhoan.findByPk(id);
+        if (!customer) {
+        return res.status(404).json({ message: 'Khách hàng không tồn tại!' });
+        }
+        res.status(200).json({
+        message: 'Lấy dữ liệu thành công!',
+        data: customer
+        });
+    } catch (error) {
+        return res.status(500).json({ message: 'Lỗi server' });
+    }
+}
+
+//Mở khóa tài khoản khách hàng
+exports.unlockCustomer = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const customer = await TaiKhoan.findByPk(id);
+        if (!customer) {
+        return res.status(404).json({ message: 'Khách hàng không tồn tại!' });
+        }
+        customer.trang_thai_tai_khoan = "Hoạt động";
+        customer.so_lan_vi_pham = 0;
+        await customer.save();
+        res.status(200).json({
+        message: 'Mở khóa tài khoản thành công!',
+        data: customer
+        });
+    } catch (error) {
+        return res.status(500).json({ message: 'Lỗi server' });
+    }
+}
+
 //Lấy danh sách nhân viên
 exports.getAllEmployees = async (req, res) => {
     try {

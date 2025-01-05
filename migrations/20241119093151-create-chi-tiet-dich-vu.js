@@ -39,6 +39,32 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
+    await queryInterface.bulkInsert('ChiTietDichVus', [
+      {
+        id: 1,
+        id_chi_tiet_phieu_dat: 1,
+        id_dich_vu: 1,
+        phi_dich_vu: 50000,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: 2,
+        id_chi_tiet_phieu_dat: 1,
+        id_dich_vu: 2,
+        phi_dich_vu: 300000,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: 3,
+        id_chi_tiet_phieu_dat: 3,
+        id_dich_vu: 2,
+        phi_dich_vu: 100000,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    ]);
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('ChiTietDichVus');

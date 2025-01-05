@@ -36,6 +36,22 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
+    await queryInterface.bulkInsert('KieuTocYeuThiches', [
+      {
+        id: 1,
+        id_tai_khoan: 1,
+        id_kieu_toc: 1,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: 2,
+        id_tai_khoan: 1,
+        id_kieu_toc: 2,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    ]);
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('KieuTocYeuThiches');

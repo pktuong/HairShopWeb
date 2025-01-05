@@ -27,6 +27,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'id_chi_tiet_phieu_dat',
         as: 'chiTietDichVus',
       });
+
+      ChiTietPhieuDat.hasMany(models.DanhGiaKieuToc, {
+        foreignKey: 'id_chi_tiet_phieu_dat',
+        as: 'danhGiaKieuToc',
+      });
     }
   }
   ChiTietPhieuDat.init({
@@ -34,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
     id_phieu_dat: DataTypes.INTEGER,
     ten_khach_hang: DataTypes.STRING,
     id_kieu_toc: DataTypes.INTEGER,
-    phi_lam_toc: DataTypes.DECIMAL
+    phi_lam_toc: DataTypes.DECIMAL,
   }, {
     sequelize,
     modelName: 'ChiTietPhieuDat',

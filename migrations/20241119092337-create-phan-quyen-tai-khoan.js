@@ -21,6 +21,26 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
+    await queryInterface.bulkInsert('PhanQuyenTaiKhoans', [
+      {
+        id: 1,
+        phan_quyen: 'Quản trị viên',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: 2,
+        phan_quyen: 'Nhân viên',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: 3,
+        phan_quyen: 'Khách hàng',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    ]);
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('PhanQuyenTaiKhoans');

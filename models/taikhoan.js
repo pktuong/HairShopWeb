@@ -40,6 +40,18 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'id_tai_khoan',
         as: 'kieuTocYeuThichs',
       });
+
+      // Một tài khoản có thể đánh giá nhiều dịch vụ
+      TaiKhoan.hasMany(models.DanhGiaDichVu, {
+        foreignKey: 'id_khach_hang',
+        as: 'danhGiaDichVus',
+      });
+
+      // Một tài khoản có thể đánh giá nhiều kiểu tóc
+      TaiKhoan.hasMany(models.DanhGiaKieuToc, {
+        foreignKey: 'id_khach_hang',
+        as: 'danhGiaKieuTocs',
+      });
     }
   }
   TaiKhoan.init({

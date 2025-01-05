@@ -21,12 +21,18 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'id_dich_vu',
         as: 'CTDV_DV',
       });
+
+      // Một chi tiết dịch vụ có thể được đánh giá bởi nhiều khách hàng
+      ChiTietDichVu.hasMany(models.DanhGiaDichVu, {
+        foreignKey: 'id_chi_tiet_dich_vu',
+        as: 'DanhGiaDichVus',
+      });
     }
   }
   ChiTietDichVu.init({
     id_chi_tiet_phieu_dat: DataTypes.INTEGER,
     id_dich_vu: DataTypes.INTEGER,
-    phi_dich_vu: DataTypes.DECIMAL
+    phi_dich_vu: DataTypes.DECIMAL,
   }, {
     sequelize,
     modelName: 'ChiTietDichVu',

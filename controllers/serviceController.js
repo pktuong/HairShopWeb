@@ -29,6 +29,29 @@ exports.addService = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// Cập nhật dịch vụ
+exports.updateService = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { ten_dich_vu, mo_ta, hinh_anh, thoi_luong, gia_tien } = req.body;
+    const service = await DichVu.findByPk(id);
+    if (!service) {
+      return res.status(404).json({ message: "Service not found" });
+    }
+    await service.update({
+      ten_dich_vu,
+      mo_ta,
+      hinh_anh,
+      thoi_luong,
+      gia_tien,
+    });
+    res.status(200).json(service);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
 // Xóa dịch vụ
 exports.deleteService = async (req, res) => {
   try {
